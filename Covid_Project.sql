@@ -6,14 +6,12 @@ SELECT *
 FROM PortfolioProject..CovidVaccinations
 ORDER BY 3,4
 
-
-/* Select Data that we are going to be using */
+/* Selecting important Data */
 
 Select location, date, total_cases, new_cases, total_deaths, population
 from PortfolioProject..CovidDeaths
 order by 1,2
 
-/* Looking up colum in db to see which datatype they have. Casting is a way to operate without altering the datatype*/
 
 /* Looking at Total Cases vs Total Deaths */
 
@@ -37,7 +35,6 @@ Where continent is not NULL
 Group by location
 order by TotalDeathCount desc
 
-/* LET'S BREAK THINGS DOWN BY CONTINENT*/
 /* Showing the Continents with the highest death count per population */
 
 Select location, max(cast(total_deaths as int)) as TotalDeathCount, (max(cast(total_deaths as float))/max(cast(population as float)))*100 as PercentPopulationDeath
@@ -46,6 +43,13 @@ Where continent is NULL
 Group by location
 order by TotalDeathCount desc
 
+/* Descriptive Statistics */
+
+Select location, median_age, avg(cast(total_tests as float)) as AverageTesting, avg(cast(positive_rate as float)) as AveragePositiveTesting, max(cast(total_vaccinations as int)) as TotalVaccination
+FROM PortfolioProject..CovidVaccinations
+where location not like 'World'
+group by location, median_age
+Order by TotalVaccination desc
 
 /* Global Numbers */
 /* Selected by Date */
@@ -56,15 +60,14 @@ where continent is not null
 group by date
 order by 1
 
-/* Total Number*/
+/* Selected by total Number*/
 
 Select sum(new_cases) as TotalCases, sum(cast(new_deaths as int)) as TotalDeaths, (sum(cast(new_deaths as float))/sum(cast(new_cases as float)))*100 as DeathPercentageGlobal
 From PortfolioProject..CovidDeaths
 where continent is not null
---group by date
 order by 1
 
-/* Queries for Vaccinated */
+/* Queries for Vaccinated-Table */
 /* Looking at Total Population vs Vaccinations and Rolling Count */
 
 SELECT dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations
@@ -89,7 +92,6 @@ JOIN PortfolioProject..CovidVaccinations vac
 	ON dea.location = vac.location
 	AND dea.date = vac.date
 where dea.continent is not null
---order by 2,3
 )
 Select *,(Convert(float,RollingPeopleVaccinated)/(convert(float, Population)))*100 as PerPeopleVaccinated
 From PopvsVac
@@ -116,7 +118,6 @@ JOIN PortfolioProject..CovidVaccinations vac
 	ON dea.location = vac.location
 	AND dea.date = vac.date
 where dea.continent is not null
---order by 2,3
 
 Select *,(Convert(float,RollingPeopleVaccinated)/(convert(float, Population)))*100 as PerPeopleVaccinated
 From #PercentPopulationVaccinated
@@ -132,19 +133,9 @@ JOIN PortfolioProject..CovidVaccinations vac
 	ON dea.location = vac.location
 	AND dea.date = vac.date
 where dea.continent is not null
---order by 2,3
-
 
 Select *
 From PercentPopulationVaccinated 
 
 
-/* More OWN Queries */ 
 
-Select location, median_age, avg(cast(total_tests as float)) as AverageTesting, avg(cast(positive_rate as float)) as AveragePositiveTesting, max(cast(total_vaccinations as int)) as TotalVaccination
-FROM PortfolioProject..CovidVaccinations
-where location not like 'World'
-group by location, median_age
-Order by TotalVaccination desc
-
---people_vaccinated, people_fully_vaccinated

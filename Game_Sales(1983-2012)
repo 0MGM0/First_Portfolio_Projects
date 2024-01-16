@@ -48,5 +48,10 @@ Order by 2
 Select Publisher, AVG(Convert(float, Global)) as Sold_Global, AVG(Convert(float, Europe)) as Sold_Europe, AVG(Convert(float, North_America)) as Sold_North_America, AVG(Cast(Japan as float)) as Sold_Japan, AVG(Cast(Rest_of_World as float)) as Sold_Rest
 FROM Games_Sales.dbo.[Video Games Sales]
 Group by Publisher
+
+Select Review, Rank, Game_Title, Platform, Year, Genre, Publisher, Global
+FROM Games_Sales.dbo.[Video Games Sales]
+Where Cast(Review as float) >= 90
+Order by 1 DESC
 Order by 2 DESC
 

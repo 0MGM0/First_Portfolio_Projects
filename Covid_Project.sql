@@ -12,7 +12,6 @@ Select location, date, total_cases, new_cases, total_deaths, population
 from PortfolioProject..CovidDeaths
 order by 1,2
 
-
 /* Looking at Total Cases vs Total Deaths */
 
 Select location, date, total_cases, total_deaths, (CAST(total_deaths AS float) / CAST(total_cases as float))*100 as 'Percentage Deaths over Cases'
@@ -79,7 +78,6 @@ JOIN PortfolioProject..CovidVaccinations vac
 where dea.continent is not null
 Order by 2,3
 
-
 /* Looking at Percentage of People Vaccinated with CTE - Number of Colums of CTE must be as long as the Number of Select Statements */
 
 With PopvsVac(Continent, Location, Date, Population, New_Vaccinations, RollingPeopleVaccinated) 
@@ -134,8 +132,6 @@ JOIN PortfolioProject..CovidVaccinations vac
 	AND dea.date = vac.date
 where dea.continent is not null
 
-Select *
-From PercentPopulationVaccinated 
 
 
 

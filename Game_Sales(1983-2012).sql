@@ -23,6 +23,13 @@ Update Games_Sales.dbo.[Video Games Sales]
 Set Year = 1990
 Where Year = 199
 
+/* Checking what Genre and Publisher are represented */
+
+Select DISTINCT Genre
+FROM Games_Sales.dbo.[Video Games Sales]
+Select DISTINCT Publisher
+FROM Games_Sales.dbo.[Video Games Sales]
+
 /* Descriptive Statistics */
 
 Select Count(Platform) as Platforms, Platform, Publisher
@@ -53,5 +60,16 @@ Select Review, Rank, Game_Title, Platform, Year, Genre, Publisher, Global
 FROM Games_Sales.dbo.[Video Games Sales]
 Where Cast(Review as float) >= 90
 Order by 1 DESC
-Order by 2 DESC
+
+/* Creating relevant Views */
+
+Create view Rank_over_90 as
+Select Review, Rank, Game_Title, Platform, Year, Genre, Publisher, Global
+FROM Games_Sales.dbo.[Video Games Sales]
+Where Cast(Review as float) >= 90
+
+Create view Regions_Selling as
+Select Publisher, AVG(Convert(float, Global)) as Sold_Global, AVG(Convert(float, Europe)) as Sold_Europe, AVG(Convert(float, North_America)) as Sold_North_America, AVG(Cast(Japan as float)) as Sold_Japan, AVG(Cast(Rest_of_World as float)) as Sold_Rest
+FROM Games_Sales.dbo.[Video Games Sales]
+Group by Publisher
 
